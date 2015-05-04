@@ -5,6 +5,10 @@ Hi, and thanks for contributing to this humble project!
 
 # Version history
 
+### 1.2
+* Fixed injection bug
+* Capped messages at 20 per box (to save bandwidth, with avatars)
+
 ### 1.1
 * Added avatars
 

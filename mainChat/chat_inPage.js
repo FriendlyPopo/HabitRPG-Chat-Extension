@@ -205,6 +205,8 @@ function digestChatData(chatBoxId,chatData) {
 	var todayYear = today.getFullYear();
 	var formattedToday = todayDay + "/" + todayMonth + "/" + todayYear;
 	
+	chatData = chatData.slice(0,20);
+	
 	for (var key in chatData) {
 	  if (chatData.hasOwnProperty(key) && chatData[key]['text'] !== null ) {
 		if (typeof chatData[key]['user'] !== 'undefined' || chatData[key]['uuid'] == "system") {
@@ -229,19 +231,19 @@ function digestChatData(chatBoxId,chatData) {
 			
 			var formattedTime = "<span class='msg_time'>"+displayedDate+" " + hours + ':' + minutes.substr(minutes.length-2) + "</span>";
 			
+			// Prevent html injection
+			chatText = chatData[key]['text'].replace('<','&lt;');
 			
 			// The type of poster
 			if(chatData[key]['uuid'] == config['uuid'])  {
 				var posterClass = "userPoster";
 				var extraActionIcon = '<span  onClick='+"'"+'deleteMessage("'+chatBoxId+'","'+groupID+'","'+chatData[key]['id']+'");'+"'"+' class="deleteMessage glyphicon glyphicon-trash"></span>';
 				// The message
-				var chatText = emoji.replace_colons(mmd(chatData[key]['text']));
+				chatText = emoji.replace_colons(mmd(chatText));
 				avatar = "<img src='https://habitrpg.com/export/avatar-"+config['uuid']+".png' />";
 			} else if (chatData[key]['uuid'] == "system") {
 				var posterClass = "systemPoster";
 				var extraActionIcon = '';
-				// The message
-				var chatText = (chatData[key]['text']);
 			} else {
 				var posterClass = "otherPoster";
 				var flagColorClass = '';
@@ -262,10 +264,9 @@ function digestChatData(chatBoxId,chatData) {
 					else var likeGlowClass = "gotlike_"+numLikes;
 					numLikes = '<span class="likeNumberCont' + likeColorClass + '">+<span class="likeNumber">' + numLikes + '</span> </span>';
 				} 
-
 				extraActionIcon += numLikes + ' <span class="'+likeColorClass+' likeMessage glyphicon glyphicon-thumbs-up" onClick='+"'"+'likeMessage("'+chatBoxId+'","'+groupID+'","'+chatData[key]['id']+'");'+"'"+'></span>';
 				// The message
-				var chatText = emoji.replace_colons(mmd(chatData[key]['text']));
+				chatText = emoji.replace_colons(mmd(chatText));
 			}
 			
 			
@@ -293,6 +294,7 @@ function digestChatData(chatBoxId,chatData) {
 				totalMentions = totalMentions + 1;
 				mentionAttribute = "mentionNumber='"+totalMentions+"'";
 			}
+			
 			
 			// Create HTML
 			var chatMessage = "<div "+mentionAttribute+" id='mid_"+chatData[key]['id']+"' class='chatMessage "+posterClass+" "+mentionClass+"'><div class='msg_avatar'><div class='msg_avatar_cropper'>"+avatar+"</div></div><div class='msg_user'>" + userLabel + "</div><div class='bubble "+likeGlowClass+"'>" + chatText + "</div><div class='msg_footer'>"+formattedTime+extraActionIcon+"</div></div>";
