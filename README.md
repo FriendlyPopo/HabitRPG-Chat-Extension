@@ -1,6 +1,8 @@
 # HabitRPG-Chat-Extension
 A HabitRPG.com Chat Client for Chrome
 
+## This project is now maintained by [HabitRPG, Inc](https://github.com/HabitRPG) at [this repository](https://github.com/HabitRPG/habitica-chat-extension)
+
 Hi, and thanks for contributing to this humble project!
 
 # Version history
